@@ -7,18 +7,18 @@ ExpansePoint :: struct {
 }
 
 @(private)
-normalize_point :: proc(expanse: ExpansePoint, value: Value) -> (Normalized, bool) {
+normalize_point :: proc(expanse: ExpansePoint, value: Value) -> (f64, bool) {
     v, ok := value.(string)
 	if (!ok) do return 0, false
 
 	index := findIndex(expanse.labels, v)
-	normalized := Normalized(f64(index + 1) / f64(len(expanse.labels) + 1))
+	normalized := f64(index + 1) / f64(len(expanse.labels) + 1)
     
     return normalized, true
 }
 
 @(private)
-unnormalize_point :: proc(expanse: ExpansePoint, value: Normalized) -> Value {
+unnormalize_point :: proc(expanse: ExpansePoint, value: f64) -> Value {
 	value := f64(value) * f64((len(expanse.labels) + 1)) - 1.0
 	index := int(math.round(value)) // This gives the wrong result for value < (1 / len) but let's ignore that for now
 

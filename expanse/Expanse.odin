@@ -1,8 +1,6 @@
 package expanse
 
-Normalized :: distinct f64
 Value :: union { f64, string, }
-
 Expanse :: union { ExpanseContinuous, ExpansePoint }
 
 continuous :: proc(min, max: f64) -> ExpanseContinuous {
@@ -13,7 +11,7 @@ point :: proc(labels: []string) -> ExpansePoint {
     return ExpansePoint{labels}
 }
 
-normalize :: proc(expanse: Expanse, value: Value) -> (Normalized, bool) {
+normalize :: proc(expanse: Expanse, value: Value) -> (f64, bool) {
 	switch e in expanse {
 	case ExpanseContinuous:
 		return normalize_continuous(e, value)
@@ -24,7 +22,7 @@ normalize :: proc(expanse: Expanse, value: Value) -> (Normalized, bool) {
 	}
 }
 
-unnormalize :: proc(expanse: Expanse, value: Normalized) -> Value {
+unnormalize :: proc(expanse: Expanse, value: f64) -> Value {
     switch e in expanse {
         case ExpanseContinuous:
             return unnormalize_continuous(e, value)
